@@ -8,42 +8,59 @@ let input = "5672987533353956199629683941564528646262567117433461547747793928322
  PUZZLE 1-1
  */
 
-// We add the last number to make the "loop"
-let input1_1 = input.appending("\(input.first!)")
-
-var previous: Int?
-var sum = 0
-for c in input1_1 {
-    let digit = ("\(c)" as NSString).integerValue
-    if previous == digit {
-        // Only if it's the same than before, we add
-        sum += digit
+func puzzle1_1(input: String) -> Int {
+    // We add the last number to make the "loop"
+    let completeInput = input.appending("\(input.first!)")
+    
+    var previous: Int?
+    var sum = 0
+    for c in completeInput {
+        let digit = ("\(c)" as NSString).integerValue
+        if previous == digit {
+            // Only if it's the same than before, we add
+            sum += digit
+        }
+        // Keep track of the previous number
+        previous = digit
     }
-    // Keep track of the previous number
-    previous = digit
+    
+    // We have our solution
+    return sum
 }
 
-// We have our solution
-print("CAPTCHA 1-1: \(sum)")
+assert(puzzle1_1(input: "1122") == 3)
+assert(puzzle1_1(input: "1111") == 4)
+assert(puzzle1_1(input: "1234") == 0)
+assert(puzzle1_1(input: "91212129") == 9)
+
+print("CAPTCHA 1-1: \(puzzle1_1(input: input))")
 
 /**
  PUZZLE 1-2
  */
 
-let size = input.count
-let offset = size/2
-
-// Reinit sum
-sum = 0
-
-for (index, c) in input.enumerated() {
-    let digit = ("\(c)" as NSString).integerValue
-    let offsetIndex = String.Index(encodedOffset: (index + offset) % size)
-    let offsetDigit = ("\(input[offsetIndex])" as NSString).integerValue
-    if digit == offsetDigit {
-        sum += digit
+func puzzle1_2(input: String) -> Int {
+    let size = input.count
+    let offset = size/2
+    var sum = 0
+    
+    for (index, c) in input.enumerated() {
+        let digit = ("\(c)" as NSString).integerValue
+        let offsetIndex = String.Index(encodedOffset: (index + offset) % size)
+        let offsetDigit = ("\(input[offsetIndex])" as NSString).integerValue
+        if digit == offsetDigit {
+            sum += digit
+        }
     }
+    
+    // We have our solution
+    return sum
 }
 
-// We have our solution
-print("CAPTCHA 1-2: \(sum)")
+assert(puzzle1_2(input: "1212") == 6)
+assert(puzzle1_2(input: "1221") == 0)
+assert(puzzle1_2(input: "123425") == 4)
+assert(puzzle1_2(input: "123123") == 12)
+assert(puzzle1_2(input: "12131415") == 4)
+
+print("CAPTCHA 1-2: \(puzzle1_2(input: input))")
