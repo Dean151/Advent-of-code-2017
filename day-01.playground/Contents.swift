@@ -25,3 +25,25 @@ for c in input1_1 {
 
 // We have our solution
 print("CAPTCHA 1-1: \(sum)")
+
+/**
+ PUZZLE 1-2
+ */
+
+let size = input.count
+let offset = size/2
+
+// Reinit sum
+sum = 0
+
+for (index, c) in input.enumerated() {
+    let digit = ("\(c)" as NSString).integerValue
+    let offsetIndex = String.Index(encodedOffset: (index + offset) % size)
+    let offsetDigit = ("\(input[offsetIndex])" as NSString).integerValue
+    if digit == offsetDigit {
+        sum += digit
+    }
+}
+
+// We have our solution
+print("CAPTCHA 1-2: \(sum)")
