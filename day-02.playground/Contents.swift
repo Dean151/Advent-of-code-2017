@@ -37,6 +37,10 @@ func spreadsheet(for input: String) -> [[Int]] {
     return spreadsheet
 }
 
+/**
+ PUZZLE 2-1
+ */
+
 func puzzle2_1(spreadsheet: [[Int]]) -> Int {
     var sum = 0
     for row in spreadsheet {
@@ -57,3 +61,39 @@ let test = """
 assert(puzzle2_1(spreadsheet: spreadsheet(for: test)) == 18)
 
 print("Checksum 2-1: \(puzzle2_1(spreadsheet: spreadsheet(for: input)))")
+
+
+/**
+ PUZZLE 2-2
+ */
+
+func puzzle2_2(spreadsheet: [[Int]]) -> Int {
+    var sum = 0
+    for row in spreadsheet {
+        // Let brute force it
+        rowLoop: for i in 0..<row.count-1 {
+            for j in i+1..<row.count {
+                let a = row[i]
+                let b = row[j]
+                if a % b == 0 {
+                    sum += a / b
+                    break rowLoop
+                } else if b % a == 0 {
+                    sum += b / a
+                    break rowLoop
+                }
+            }
+        }
+    }
+    return sum
+}
+
+let test2 = """
+5  9  2  8
+9  4  7  3
+3  8  6  5
+"""
+
+assert(puzzle2_2(spreadsheet: spreadsheet(for: test2)) == 9)
+
+print("Checksum 2-2: \(puzzle2_2(spreadsheet: spreadsheet(for: input)))")
