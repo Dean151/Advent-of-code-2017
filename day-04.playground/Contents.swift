@@ -521,13 +521,14 @@ func phrases(for input: String) -> [String] {
     return input.components(separatedBy: .newlines)
 }
 
-func isPhraseValid(_ phrase: String) -> Bool {
+func isPhraseValid(_ phrase: String, excludeAnagrams: Bool = false) -> Bool {
     var words = Set<String>()
     for word in phrase.components(separatedBy: .whitespaces) {
-        if words.contains(word) {
+        let comparer = excludeAnagrams ? String(word.sorted()) : word
+        if words.contains(comparer) {
             return false
         }
-        words.insert(word)
+        words.insert(comparer)
     }
     return true
 }
@@ -536,12 +537,19 @@ assert(isPhraseValid("aa bb cc dd ee"))
 assert(!isPhraseValid("aa bb cc dd aa"))
 assert(isPhraseValid("aa bb cc dd aaa"))
 
-func puzzle4_1(input: String) -> Int {
+assert(isPhraseValid("abcde fghij", excludeAnagrams: true))
+assert(!isPhraseValid("abcde xyz ecdab", excludeAnagrams: true))
+assert(isPhraseValid("a ab abc abd abf abj", excludeAnagrams: true))
+assert(isPhraseValid("iiii oiii ooii oooi oooo", excludeAnagrams: true))
+assert(!isPhraseValid("oiii ioii iioi iiio", excludeAnagrams: true))
+
+func puzzle4(input: String, excludeAnagrams: Bool = false) -> Int {
     var count = 0
     for phrase in phrases(for: input) {
-        count += isPhraseValid(phrase) ? 1 : 0
+        count += isPhraseValid(phrase, excludeAnagrams: excludeAnagrams) ? 1 : 0
     }
     return count
 }
 
-print("Number of phrases valid for 4-1: \(puzzle4_1(input: input))")
+print("Number of phrases valid for 4-1: \(puzzle4(input: input))")
+print("Number of phrases valid for 4-2: \(puzzle4(input: input, excludeAnagrams: true))")
