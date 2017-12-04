@@ -15,16 +15,16 @@ let input = 347991
 enum Direction {
     case right, up, left, down
     
-    func move(from coordinates: (x: Int, y: Int)) -> (x: Int, y: Int) {
+    func move(from coordinates: (x: Int, y: Int), length: Int = 1) -> (x: Int, y: Int) {
         switch self {
         case .right:
-            return (x: coordinates.x + 1, y: coordinates.y)
+            return (x: coordinates.x + length, y: coordinates.y)
         case .up:
-            return (x: coordinates.x, y: coordinates.y + 1)
+            return (x: coordinates.x, y: coordinates.y + length)
         case .left:
-            return (x: coordinates.x - 1, y: coordinates.y)
+            return (x: coordinates.x - length, y: coordinates.y)
         case .down:
-            return (x: coordinates.x, y: coordinates.y - 1)
+            return (x: coordinates.x, y: coordinates.y - length)
         }
     }
     
@@ -46,17 +46,18 @@ enum Direction {
 
 func puzzle3_1(input: Int) -> Int {
     var position = (x: 0, y: 0)
-    var n = 0
+    var n = 1
     var turns = 0
     
     while n < input-1 {
         let length = (turns / 2) + 1
-        for _ in 0..<length {
-            if n == input-1 {
-                break
-            }
-            n += 1
-            position = Direction.from(turns: turns).move(from: position)
+        n += length
+        let direction = Direction.from(turns: turns)
+        position = direction.move(from: position, length: length)
+        if n > input {
+            let diff = n - input
+            position = Direction.from(turns: turns).move(from: position, length: -diff)
+            break
         }
         turns += 1
     }
@@ -69,7 +70,7 @@ assert(puzzle3_1(input: 12) == 3)
 assert(puzzle3_1(input: 23) == 2)
 assert(puzzle3_1(input: 1024) == 31)
 
-//print("Distance for 3-1: \(puzzle3_1(input: input))")
+print("Distance from 1 to \(input) (3-1): \(puzzle3_1(input: input))")
 
 struct SpiralData {
     
@@ -131,4 +132,4 @@ assert(puzzle3_2(input: 100) == 122)
 assert(puzzle3_2(input: 700) == 747)
 assert(puzzle3_2(input: 800) == 806)
 
-print("First value bigger for 3-2: \(puzzle3_2(input: input))")
+print("First value bigger than \(input) for 3-2: \(puzzle3_2(input: input))")
