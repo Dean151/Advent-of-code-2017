@@ -8,7 +8,7 @@ func jumps(for input: String) -> [Int] {
     return input.components(separatedBy: .whitespacesAndNewlines).flatMap { Int($0) }
 }
 
-func puzzle5_1(input: [Int]) -> Int {
+func puzzle5(input: [Int], decrease: Bool = false) -> Int {
     // Create a mutable copy
     var jumps = input
     var index = 0
@@ -16,12 +16,16 @@ func puzzle5_1(input: [Int]) -> Int {
     while index >= 0 && index < jumps.count {
         let i = index
         index += jumps[i]
-        jumps[i] += 1
+        jumps[i] += (decrease && jumps[i] >= 3) ? -1 : 1
         count += 1
     }
     return count
 }
 
-assert(puzzle5_1(input: jumps(for: "0 3 0 1 -3")) == 5)
+assert(puzzle5(input: jumps(for: "0 3 0 1 -3")) == 5)
 
-print("Number of jumps for input 5-1: \(puzzle5_1(input: jumps(for: input)))")
+print("Number of jumps for input 5-1: \(puzzle5(input: jumps(for: input)))")
+
+assert(puzzle5(input: jumps(for: "0 3 0 1 -3"), decrease: true) == 10)
+
+print("Number of jumps for input 5-2: \(puzzle5(input: jumps(for: input), decrease: true))")
