@@ -40,7 +40,7 @@ func hash(for banks: [Int]) -> String {
     return hash
 }
 
-func puzzle6_1(for input: [Int]) -> Int {
+func puzzle6(for input: [Int]) -> (count: Int, banks: [Int]) {
     var count = 0
     var history = Set<String>()
     var banks = input
@@ -74,9 +74,13 @@ func puzzle6_1(for input: [Int]) -> Int {
         count += 1
     }
     
-    return count
+    return (count: count, banks: banks)
 }
 
-assert(puzzle6_1(for: banks(for: "0 2 7 0")) == 5)
+let testResults = puzzle6(for: banks(for: "0 2 7 0"))
+assert(testResults.count == 5)
+assert(puzzle6(for: testResults.banks).count == 4)
 
-print("Exchange number for puzzle 6-1: \(puzzle6_1(for: banks(for: input)))")
+let results = puzzle6(for: banks(for: input))
+print("Exchange number for puzzle 6-1: \(results.count)")
+print("Loop size for puzzle 6-2: \(puzzle6(for: results.banks).count)")
