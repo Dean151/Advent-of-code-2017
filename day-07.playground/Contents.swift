@@ -14,6 +14,10 @@ class Program {
     var parent: Program?
     var children = [Program]()
     
+    var totalWeight: Int {
+        return children.reduce(weight, { $0 + $1.totalWeight })
+    }
+    
     init(name: String, weight: Int) {
         self.name = name
         self.weight = weight
@@ -73,6 +77,17 @@ class Program {
     }
 }
 
+extension Program: Equatable, Hashable {
+    
+    var hashValue: Int {
+        return name.hashValue
+    }
+    
+    static func == (lhs: Program, rhs: Program) -> Bool {
+        return lhs.name == rhs.name
+    }
+}
+
 // Get the bottom program
 func puzzle7_1(tree: Program) -> String {
     return tree.name
@@ -96,4 +111,45 @@ cntj (57)
 
 assert(puzzle7_1(tree: Program.reconstructTree(input: example)) == "tknk")
 
-print("Bottom program for 6-1: \(puzzle7_1(tree: Program.reconstructTree(input: input)))")
+//print("Bottom program for 7-1: \(puzzle7_1(tree: Program.reconstructTree(input: input)))")
+
+func findUnbalanced(programs: [Program]) -> (program: Program, expectedWeight: Int)? {
+    
+    if programs.count <= 1 {
+        return nil
+    }
+    
+    let sortedPrograms = programs.sorted(by: { $0.totalWeight < $1.totalWeight })
+    if sortedPrograms[0].totalWeight != sortedPrograms[1].totalWeight {
+        return (sortedPrograms[0], sortedPrograms[1].totalWeight)
+    }
+    if sortedPrograms[sortedPrograms.count-1].totalWeight != sortedPrograms[sortedPrograms.count-2].totalWeight {
+        return (sortedPrograms[sortedPrograms.count-1], sortedPrograms[sortedPrograms.count-2].totalWeight)
+    }
+    
+    return nil
+}
+
+func puzzle7_2(tree: Program) -> Int {
+    var lastProgram = tree
+    var expectedWeight = tree.totalWeight
+    var program = findUnbalanced(programs: lastProgram.children)
+    while program != nil {
+        lastProgram = program!.0
+        expectedWeight = program!.1
+        
+        print("unbalanced: \(lastProgram.name), total weight: \(lastProgram.totalWeight), should be \(expectedWeight)")
+        print(lastProgram.children.reduce("child weights: ", { "\($0) \($1.totalWeight), " }))
+        
+        program = findUnbalanced(programs: lastProgram.children)
+    }
+    
+    print(expectedWeight)
+    print(lastProgram.totalWeight)
+    
+    return lastProgram.weight + (expectedWeight - lastProgram.totalWeight)
+}
+
+assert(puzzle7_2(tree: Program.reconstructTree(input: example)) == 60)
+
+print("Balanced weight for 7-2: \(puzzle7_2(tree: Program.reconstructTree(input: input)))")
