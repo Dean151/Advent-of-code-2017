@@ -12,6 +12,7 @@ enum Errors: Error {
 
 struct Register {
     private var values = [String: Int]()
+    private var maximum = 0
     
     func get(_ variable: String) -> Int {
         return values[variable] ?? 0
@@ -19,10 +20,15 @@ struct Register {
     
     mutating func set(_ variable: String, value: Int) {
         values.updateValue(value, forKey: variable)
+        maximum = Swift.max(value, maximum)
     }
     
     func max() -> Int {
         return values.values.max() ?? 0
+    }
+    
+    func overallMax() -> Int {
+        return maximum
     }
 }
 
@@ -134,7 +140,7 @@ struct Instruction {
     }
 }
 
-func puzzle6_1(input: String) -> Int {
+func puzzle6(input: String) -> (Int, Int) {
     var register = Register()
     for instruction in input.components(separatedBy: .newlines) {
         do {
@@ -146,7 +152,7 @@ func puzzle6_1(input: String) -> Int {
             print("Could not parse instruction: \(instruction)")
         }
     }
-    return register.max()
+    return (register.max(), register.overallMax())
 }
 
 let example = """
@@ -156,6 +162,11 @@ c dec -10 if a >= 1
 c inc -20 if c == 10
 """
 
-assert(puzzle6_1(input: example) == 1)
+let exampleValues = puzzle6(input: example)
+assert(exampleValues.0 == 1)
+assert(exampleValues.1 == 10)
 
-print("Max register value for 8-1: \(puzzle6_1(input: input))")
+let values = puzzle6(input: input)
+print("Max register value for 8-1: \(values.0)")
+print("Overall max register value for 8-2: \(values.1)")
+
