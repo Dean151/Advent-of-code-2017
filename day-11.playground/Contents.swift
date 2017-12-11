@@ -35,27 +35,42 @@ enum HexDirection: String {
     }
 }
 
-func hexDistance(directions: [HexDirection]) -> Int {
+struct HexCoordinate {
     var coords = (x: 0, y: 0)
     
-    for direction in directions {
+    mutating func move(direction: HexDirection) {
         coords = direction.move(from: coords)
     }
     
-    // Mannathan distance for hexagonal grid
-    
-    if coords.x == 0 || coords.y == 0 || coords.x/abs(coords.x) == coords.y/abs(coords.y) {
-        // If same sign
-        return abs(coords.x + coords.y)
-    } else {
-        // Not the same sign
-        return max(abs(coords.x), abs(coords.y))
+    var distanceFromOrigin: Int {
+        if coords.x == 0 || coords.y == 0 || coords.x/abs(coords.x) == coords.y/abs(coords.y) {
+            // If same sign
+            return abs(coords.x + coords.y)
+        } else {
+            // Not the same sign
+            return max(abs(coords.x), abs(coords.y))
+        }
     }
 }
 
-assert(hexDistance(directions: HexDirection.from(input: "ne,ne,ne")) == 3)
-assert(hexDistance(directions: HexDirection.from(input: "ne,ne,sw,sw")) == 0)
-assert(hexDistance(directions: HexDirection.from(input: "ne,ne,s,s")) == 2)
-assert(hexDistance(directions: HexDirection.from(input: "se,sw,se,sw,sw")) == 3)
+func hexDistance(directions: [HexDirection]) -> (Int, Int) {
+    var coords = HexCoordinate()
+    var maxDistance = 0
+    
+    for direction in directions {
+        coords.move(direction: direction)
+        maxDistance = max(maxDistance, coords.distanceFromOrigin)
+    }
+    
+    // Mannathan distance for hexagonal grid
+    return (coords.distanceFromOrigin, maxDistance)
+}
 
-print("Number of steps for 11-1: \(hexDistance(directions: HexDirection.from(input: input)))")
+assert(hexDistance(directions: HexDirection.from(input: "ne,ne,ne")).0 == 3)
+assert(hexDistance(directions: HexDirection.from(input: "ne,ne,sw,sw")).0 == 0)
+assert(hexDistance(directions: HexDirection.from(input: "ne,ne,s,s")).0 == 2)
+assert(hexDistance(directions: HexDirection.from(input: "se,sw,se,sw,sw")).0 == 3)
+
+let results = hexDistance(directions: HexDirection.from(input: input))
+print("Number of steps for 11-1: \(results.0)")
+print("furthest we ever got from origin for 11-2: \(results.1)")
