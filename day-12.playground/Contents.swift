@@ -9,6 +9,19 @@ struct Program {
     let pid: Int
     var pipesTo = [Int]()
     
+    func directPipesToPrograms(with programs: [Int: Program]) -> [Program] {
+        return pipesTo.flatMap({ programs[$0] })
+    }
+    
+    func allPipes(with programs: [Int: Program], excluding: Set<Int> = []) -> Set<Int> {
+        var pipes = Set<Int>([pid])
+        let directPipes = directPipesToPrograms(with: programs).filter({ !excluding.contains($0.pid) })
+        for program in directPipes {
+            pipes = pipes.union(program.allPipes(with: programs, excluding: pipes.union(excluding)))
+        }
+        return pipes
+    }
+    
     static func from(line: String) -> Program? {
         let components = line.components(separatedBy: " <-> ")
         guard let pid = Int(components[0]) else {
@@ -30,6 +43,25 @@ func programs(from input: String) -> [Int: Program] {
     return programs
 }
 
+func groupsOfPrograms(programs: [Int: Program]) -> [Set<Int>] {
+    var groups = [Set<Int>]()
+    var programsCopy = programs
+    
+    while let program = programsCopy.values.first {
+        let group =  program.allPipes(with: programs)
+        for pid in group {
+            programsCopy.removeValue(forKey: pid)
+        }
+        groups.append(group)
+    }
+    
+    return groups
+}
+
+func numberOfProgram(thatCanCommunicateWith pid: Int, with groups: [Set<Int>]) -> Int {
+    return groups.first(where: { $0.contains(pid) })?.count ?? 0
+}
+
 let example = """
 0 <-> 2
 1 <-> 1
@@ -40,26 +72,15 @@ let example = """
 6 <-> 4, 5
 """
 let examplePrograms = programs(from: example)
+let groupedExample = groupsOfPrograms(programs: examplePrograms)
 assert(examplePrograms.count == 7)
 assert(examplePrograms[4]?.pipesTo.count == 3)
+assert(numberOfProgram(thatCanCommunicateWith: 0, with: groupedExample) == 6)
+assert(groupedExample.count == 2)
 
-func numberOfProgram(thatCanCommunicateWith pid: Int, in programs: [Int: Program], excluding: inout Set<Int>) -> Int {
-    guard let program = programs[pid] else {
-        return 0
-    }
-    if excluding.contains(pid) {
-        return 0
-    }
-    
-    let pipes = program.pipesTo.filter({ !excluding.contains($0) })
-    excluding.insert(program.pid)
-    return pipes.reduce(1, { $0 + numberOfProgram(thatCanCommunicateWith: $1, in: programs, excluding: &excluding) })
-}
 
-var exampleExcluding = Set<Int>()
-let exampleResult = numberOfProgram(thatCanCommunicateWith: 0, in: examplePrograms, excluding: &exampleExcluding)
-assert(exampleResult == 6)
-
-var programExcluding = Set<Int>()
 let inputPrograms = programs(from: input)
-print("Number of programs that can communicate with 0 for 12-1: \(numberOfProgram(thatCanCommunicateWith: 0, in: inputPrograms, excluding: &programExcluding))")
+let groupedPrograms = groupsOfPrograms(programs: inputPrograms)
+let number = numberOfProgram(thatCanCommunicateWith: 0, with: groupedPrograms)
+print("Number of programs that can communicate with 0 for 12-1: \(number)")
+print("Number of groups of programs for 12-2: \(groupedPrograms.count)")
