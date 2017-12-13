@@ -21,8 +21,12 @@ struct Scanner {
         self.range = range
     }
     
-    func doCatch(at time: Int) -> Bool {
-        return time % ((range - 1) * 2) == 0
+    var period: Int {
+        return (range - 1) * 2
+    }
+    
+    func doCatch(with delay: Int) -> Bool {
+        return (depth+delay) % period == 0
     }
 }
 
@@ -46,17 +50,12 @@ func firewall(for input: String) -> [Scanner?] {
 
 func severity(for firewall: [Scanner?]) -> Int {
     var severity = 0
-    var currentDepth = 0
     
-    while currentDepth < firewall.count {
-        // We get in currentDepth
-        if let scanner = firewall[currentDepth], scanner.doCatch(at: currentDepth) {
+    for scanner in firewall where scanner != nil {
+        if scanner!.doCatch(with: 0) {
             // We got caught !
-            severity += scanner.depth * scanner.range
+            severity += scanner!.depth * scanner!.range
         }
-        
-        // We increment currentDepth
-        currentDepth += 1
     }
     
     return severity
@@ -78,8 +77,8 @@ func minimumDelay(toGetThrough firewall: [Scanner?]) -> Int {
     var delay = 0
     
     whileLoop: while true  {
-        for (depth, scanner) in firewall.enumerated() where scanner != nil {
-            if scanner!.doCatch(at: depth + delay) {
+        for scanner in firewall where scanner != nil {
+            if scanner!.doCatch(with: delay) {
                 // Next iteration
                 delay += 1
                 continue whileLoop
