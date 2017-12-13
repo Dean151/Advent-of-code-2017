@@ -76,13 +76,18 @@ print("Severity for 13-1: \(severity(for: inputScanners))")
 
 func minimumDelay(toGetThrough firewall: [Scanner?]) -> Int {
     var delay = 0
-    var gotCaught = false
     
-    repeat {
-        
-        // TODO simpler algorithm
-        
-    } while gotCaught
+    whileLoop: while true  {
+        for (depth, scanner) in firewall.enumerated() where scanner != nil {
+            if scanner!.doCatch(at: depth + delay) {
+                // Next iteration
+                delay += 1
+                continue whileLoop
+            }
+        }
+        // We got through!
+        break
+    }
     
     return delay
 }
