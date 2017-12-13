@@ -27,6 +27,11 @@ class Scanner {
         }
     }
     
+    func reset() {
+        currentRange = 0
+        goingDown = true
+    }
+    
     init(depth: Int, range: Int) {
         self.depth = depth
         self.range = range
@@ -62,15 +67,20 @@ func firewall(for input: String) -> [Scanner?] {
     return firewall
 }
 
-func severity(for firewall: [Scanner?]) -> Int {
+func severity(for firewall: [Scanner?], delayedBy delay: Int = 0) -> (severity: Int, gotCaught: Bool) {
     var severity = 0
-    var currentDepth = 0
+    var currentDepth = -delay
+    var gotCaught = false
     
-    while true {
+    // Reset scanners
+    firewall.forEach({ $0?.reset() })
+    
+    while currentDepth < firewall.count {
         // We get in currentDepth
-        if let scanner = firewall[currentDepth], scanner.currentRange == 0 {
+        if currentDepth >= 0, let scanner = firewall[currentDepth], scanner.currentRange == 0 {
             // We got caught !
             severity += scanner.depth * scanner.range
+            gotCaught = true
         }
         
         // Scanners move then
@@ -78,13 +88,9 @@ func severity(for firewall: [Scanner?]) -> Int {
         
         // We increment currentDepth
         currentDepth += 1
-        
-        if currentDepth >= firewall.count {
-            break
-        }
     }
     
-    return severity
+    return (severity, gotCaught)
 }
 
 let example = """
@@ -94,7 +100,33 @@ let example = """
 6: 4
 """
 let exampleScanners = firewall(for: example)
-assert(severity(for: exampleScanners) == 24)
+assert(severity(for: exampleScanners).severity == 24)
 
 let inputScanners = firewall(for: input)
-print("Severity for 13-1: \(severity(for: inputScanners))")
+print("Severity for 13-1: \(severity(for: inputScanners).severity)")
+
+func minimumDelay(toGetThrough firewall: [Scanner?]) -> Int {
+    // Since "0: 3", delay = 0 is not an option
+    // As "1: 2", delay = 1 is not an option either
+    var delay = 2
+    var gotCaught = false
+    
+    repeat {
+        let result = severity(for: firewall, delayedBy: delay)
+        gotCaught = result.gotCaught
+        print("\(delay) - \(gotCaught) - \(result.severity)")
+        if gotCaught {
+            // Since "1: 2" for example and input, delay will be pair
+            delay += 2
+            // Since "0: 3" and "6: 4"
+            while delay % 4 == 0 || delay-6 % 12 == 0 {
+                delay += 2
+            }
+        }
+    } while gotCaught
+    
+    return delay
+}
+
+assert(minimumDelay(toGetThrough: exampleScanners) == 10)
+print("Delay to get through for 13-2: \(minimumDelay(toGetThrough: inputScanners))")
