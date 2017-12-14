@@ -5,65 +5,54 @@ import Foundation
 let input = "hxtvlmkl"
 
 extension Character {
-    func hexToBinary() -> String {
-        switch self {
-        case "0":
-            return "...."
-        case "1":
-            return "...#"
-        case "2":
-            return "..#."
-        case "3":
-            return "..##"
-        case "4":
-            return ".#.."
-        case "5":
-            return ".#.#"
-        case "6":
-            return ".##."
-        case "7":
-            return ".###"
-        case "8":
-            return "#..."
-        case "9":
-            return "#..#"
-        case "a":
-            return "#.#."
-        case "b":
-            return "#.##"
-        case "c":
-            return "##.."
-        case "d":
-            return "##.#"
-        case "e":
-            return "###."
-        case "f":
-            return "####"
-        default:
-            return ""
+    var hexValue: UInt {
+        if let number = UInt("\(self)") {
+            return number
         }
+        
+        return UInt(self.unicodeScalars.first!.value - 87)
+    }
+    
+    func hexToBinary(minSize: Int) -> [Bool] {
+        var array = [Bool].init(repeating: false, count: minSize)
+        
+        var value = self.hexValue
+        var index = 0
+        repeat {
+            let bool = value % 2 == 1
+            if index >= array.count {
+                array.append(bool)
+            } else {
+                array[index] = bool
+            }
+            
+            value = (value - (value % 2)) / 2
+            index += 1
+        } while value > 0
+        
+        return array.reversed()
     }
 }
 
 extension String {
-    func hexToBinary() -> String {
-        var binary = ""
+    func hexToBinary() -> [Bool] {
+        var binary: [Bool] = []
         
         for character in self {
-            binary += character.hexToBinary()
+            binary.append(contentsOf: character.hexToBinary(minSize: 4))
         }
         
         return binary
     }
 }
 
-assert("a0c2017".hexToBinary() == "#.#.....##....#........#.###")
+assert("a0c2017".hexToBinary().reduce("", { $0 + ($1 ? "1" : "0") }) == "1010000011000010000000010111")
 
 func numberSquareUsed(for input: String) -> Int {
     var squares = 0
     
     for row in 0..<128 {
-        squares += knotHash(for: input.appending("-\(row)")).hexToBinary().reduce(0, { $0 + ($1 == "#" ? 1 : 0) })
+        squares += knotHash(for: input.appending("-\(row)")).hexToBinary().reduce(0, { $0 + ($1 ? 1 : 0) })
     }
     
     return squares
