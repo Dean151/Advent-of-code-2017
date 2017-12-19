@@ -62,3 +62,52 @@ let example = "flqrgnkx"
 assert(numberSquareUsed(for: example) == 8108)
 
 print("Number of squares used for 14-1: \(numberSquareUsed(for: input))")
+
+class Disk {
+    var data: [[Bool]] = []
+    
+    init(input: String) {
+        for row in 0..<128 {
+            data.append(knotHash(for: input.appending("-\(row)")).hexToBinary())
+        }
+    }
+    
+    func bool(at coords: (x: Int, y: Int)) -> Bool {
+        if  data.count == 0 || data.first!.count == 0 || coords.x < 0 || coords.y < 0 || coords.x >= data.first!.count || coords.y >= data.count {
+            return false
+        }
+        
+        return data[coords.y][coords.x]
+    }
+    
+    func eraseRegion(around coords: (x: Int, y: Int)) {
+        let dxs = [-1,-1,1,1]
+        let dys = [-1,1,-1,1]
+        for i in 0..<4 {
+            let neighboor = (x: coords.x + dxs[i], y: coords.y + dys[i])
+            if bool(at: neighboor) {
+                eraseRegion(around: neighboor)
+            }
+            data[coords.y][coords.x] = false
+        }
+    }
+}
+
+func numberOfRegions(in disk: Disk) -> Int {
+    var numberOfRegions = 0
+    for y in 0..<128 {
+        for x in 0..<128 {
+            if disk.bool(at: (x: x, y: y)) {
+                // We count the region
+                numberOfRegions += 1
+                // We erase the region
+                disk.eraseRegion(around: (x: x, y: y))
+            }
+        }
+    }
+    return numberOfRegions
+}
+
+assert(numberOfRegions(in: Disk(input: example)) == 1242)
+
+print("Number of regions for 14-2: \(numberOfRegions(in: Disk(input: input)))")
