@@ -1,6 +1,9 @@
 //: Playground - noun: a place where people can play
 
 import Foundation
+import XCPlayground
+
+XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
 
 let url = Bundle.main.url(forResource: "input", withExtension: "txt")!
 let input = try! String(contentsOf: url)
@@ -110,7 +113,7 @@ func frequencyAtLastRecovery(for instructions: [Instruction]) -> Int? {
     var index = 0
     var lastSoundPlayed = 0
     
-    whileLoop: while index < instructions.count {
+    while index < instructions.count {
         
         let instruction = instructions[index]
         
@@ -150,4 +153,99 @@ jgz a -2
 let exampleInstructions = instructions(for: example)
 assert(frequencyAtLastRecovery(for: exampleInstructions) == 4)
 
-print("Last sound recovered for 18-1: \(frequencyAtLastRecovery(for: instructions(for: input)))")
+//print("Last sound recovered for 18-1: \(frequencyAtLastRecovery(for: instructions(for: input)))")
+
+class Program {
+    let pid: Int
+    let instructions: [Instruction]
+    var registry: [String: Int]
+    
+    var retreiveQueue: [Int] = []
+    var communicateWith: Program?
+    var isLocked = false
+    var timesSended = 0
+    
+    var index = 0
+    
+    init(pid: Int, instructions: [Instruction]) {
+        self.pid = pid
+        self.instructions = instructions
+        registry = ["p": pid]
+    }
+    
+    func resume(queue: DispatchQueue) {
+        self.isLocked = false
+        queue.async {
+            print("Resuming \(self.pid)")
+            while self.index < self.instructions.count {
+                let instruction = self.instructions[self.index]
+                
+                switch instruction {
+                case .sound(variable: let variable):
+                    // It's send
+                    self.timesSended += 1
+                    self.communicateWith?.retreiveQueue.insert(self.registry[variable] ?? 0, at: 0)
+                    if self.communicateWith?.isLocked == true {
+                        self.communicateWith?.resume(queue: queue)
+                    }
+                case .recovers(variable: let variable):
+                    // It's receive
+                    if let value = self.retreiveQueue.popLast() {
+                        self.registry.updateValue(value, forKey: variable)
+                    }
+                    else if self.communicateWith?.isLocked == true {
+                        // deadlock
+                        if self.pid == 1 {
+                            print("Finished with \(self.timesSended)")
+                        } else if self.communicateWith?.pid == 1 {
+                            print("Finished with \(self.communicateWith?.timesSended ?? 0)")
+                        }
+                        print("Deadlock with \(self.pid)")
+                        return
+                    }
+                    else {
+                        self.isLocked = true
+                        print("Stopping \(self.pid)")
+                        return
+                    }
+                case .jumps(variable: let variable, value: let jumpValue):
+                    if let value = self.registry[variable], value > 0 {
+                        self.index += jumpValue.realValue(with: self.registry) - 1
+                    }
+                default:
+                    instruction.perform(on: &self.registry)
+                }
+                
+                self.index += 1
+            }
+        }
+    }
+}
+
+func perform(for input: String) {
+    // Set everything up
+    let inputInstructions = instructions(for: input)
+    let p0 = Program(pid: 0, instructions: inputInstructions)
+    let p1 = Program(pid: 1, instructions: inputInstructions)
+    
+    p0.communicateWith = p1
+    p1.communicateWith = p0
+    
+    let queue = DispatchQueue(label: "queue")
+    p0.resume(queue: queue)
+    p1.resume(queue: queue)
+}
+
+// Example
+let example2 = """
+snd 1
+snd 2
+snd p
+rcv a
+rcv b
+rcv c
+rcv d
+"""
+perform(for: example2)
+
+perform(for: input)
