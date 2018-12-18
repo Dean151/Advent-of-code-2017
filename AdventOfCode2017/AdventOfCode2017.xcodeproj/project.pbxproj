@@ -15,6 +15,7 @@
 		71D33BF721C9296B0099E59D /* Day2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BF621C9296B0099E59D /* Day2.swift */; };
 		71D33BFB21C92E380099E59D /* Day3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BFA21C92E380099E59D /* Day3.swift */; };
 		71D33BFE21C930880099E59D /* Day4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BFD21C930880099E59D /* Day4.swift */; };
+		71D33C0021C931C70099E59D /* Day5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BFF21C931C70099E59D /* Day5.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,6 +45,8 @@
 		71D33BFA21C92E380099E59D /* Day3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day3.swift; sourceTree = "<group>"; };
 		71D33BFC21C930760099E59D /* day4.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day4.txt; sourceTree = "<group>"; };
 		71D33BFD21C930880099E59D /* Day4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day4.swift; sourceTree = "<group>"; };
+		71D33BFF21C931C70099E59D /* Day5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day5.swift; sourceTree = "<group>"; };
+		71D33C0121C931D20099E59D /* day5.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day5.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +96,7 @@
 				71D33BF621C9296B0099E59D /* Day2.swift */,
 				71D33BFA21C92E380099E59D /* Day3.swift */,
 				71D33BFD21C930880099E59D /* Day4.swift */,
+				71D33BFF21C931C70099E59D /* Day5.swift */,
 			);
 			path = Days;
 			sourceTree = "<group>";
@@ -105,6 +109,7 @@
 				71D33BF821C929760099E59D /* day2.txt */,
 				71D33BF921C92E290099E59D /* day3.txt */,
 				71D33BFC21C930760099E59D /* day4.txt */,
+				71D33C0121C931D20099E59D /* day5.txt */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -173,6 +178,7 @@
 				71D33BEF21C923FB0099E59D /* shared.swift in Sources */,
 				71D33BF121C924190099E59D /* Input.swift in Sources */,
 				71D33BE421C923AA0099E59D /* main.swift in Sources */,
+				71D33C0021C931C70099E59D /* Day5.swift in Sources */,
 				71D33BFE21C930880099E59D /* Day4.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
