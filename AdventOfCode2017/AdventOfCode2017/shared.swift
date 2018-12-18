@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias Position: (x: Int, y: Int)
+typealias Position = (x: Int, y: Int)
 
 extension NSTextCheckingResult {
     public func group(at index: Int, in string: String) -> String {

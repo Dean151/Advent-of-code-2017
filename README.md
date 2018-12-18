@@ -27,5 +27,6 @@ Some attention will be ported to performance consideration, let try to make that
 
 | Day    | Computing time* | Part 1   | Part 2     |
 |--------|-----------------|----------|------------|
+| **1**  | 0,002s          | 1136     | 1092       |
 
 \* : Best elapsed time of the complete solution for my MacBook Pro 13in mid 2013 in "Release" mode
