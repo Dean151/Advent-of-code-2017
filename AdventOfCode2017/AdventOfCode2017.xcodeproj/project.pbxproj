@@ -12,6 +12,7 @@
 		71D33BEF21C923FB0099E59D /* shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BEE21C923FB0099E59D /* shared.swift */; };
 		71D33BF121C924190099E59D /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BF021C924190099E59D /* Input.swift */; };
 		71D33BF421C9250F0099E59D /* Day1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BF321C9250F0099E59D /* Day1.swift */; };
+		71D33BF721C9296B0099E59D /* Day2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BF621C9296B0099E59D /* Day2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +36,8 @@
 		71D33BF221C924350099E59D /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = readme.md; path = ../readme.md; sourceTree = "<group>"; };
 		71D33BF321C9250F0099E59D /* Day1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day1.swift; sourceTree = "<group>"; };
 		71D33BF521C925730099E59D /* day1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day1.txt; sourceTree = "<group>"; };
+		71D33BF621C9296B0099E59D /* Day2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day2.swift; sourceTree = "<group>"; };
+		71D33BF821C929760099E59D /* day2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day2.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,7 @@
 			children = (
 				71D33BEC21C923F50099E59D /* Day.swift */,
 				71D33BF321C9250F0099E59D /* Day1.swift */,
+				71D33BF621C9296B0099E59D /* Day2.swift */,
 			);
 			path = Days;
 			sourceTree = "<group>";
@@ -90,6 +94,7 @@
 			children = (
 				71D33BF021C924190099E59D /* Input.swift */,
 				71D33BF521C925730099E59D /* day1.txt */,
+				71D33BF821C929760099E59D /* day2.txt */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -152,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71D33BED21C923F50099E59D /* Day.swift in Sources */,
+				71D33BF721C9296B0099E59D /* Day2.swift in Sources */,
 				71D33BF421C9250F0099E59D /* Day1.swift in Sources */,
 				71D33BEF21C923FB0099E59D /* shared.swift in Sources */,
 				71D33BF121C924190099E59D /* Input.swift in Sources */,
