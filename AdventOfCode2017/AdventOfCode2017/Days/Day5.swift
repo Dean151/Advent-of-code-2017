@@ -32,7 +32,7 @@ class Day5: Day {
         let number = perform(jumps)
         print("Number of jumps for Day 5-1 is \(number)")
         
-        assert(perform([0, 3, 0, 1, -3]) == 10)
+        assert(perform([0, 3, 0, 1, -3], decreasing: true) == 10)
         
         let numberWithDecrease = perform(jumps, decreasing: true)
         print("Number of jumps for Day 5-2 is \(numberWithDecrease)")

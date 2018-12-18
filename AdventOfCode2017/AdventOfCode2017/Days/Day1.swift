@@ -34,7 +34,7 @@ class Day1: Day {
         let sum = captchaSum(input: input)
         print("Captcha sum for Day 1-1 is \(sum)")
         
-        assert(captchaSum(input: "1122", offsetted: true) == 6)
+        assert(captchaSum(input: "1212", offsetted: true) == 6)
         assert(captchaSum(input: "1221", offsetted: true) == 0)
         assert(captchaSum(input: "123425", offsetted: true) == 4)
         assert(captchaSum(input: "123123", offsetted: true) == 12)
