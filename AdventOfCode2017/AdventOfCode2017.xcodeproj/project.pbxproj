@@ -32,6 +32,25 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		711290A221C952F300C6F00D /* day7.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day7.txt; sourceTree = "<group>"; };
+		711290A321C9531900C6F00D /* day8.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day8.txt; sourceTree = "<group>"; };
+		711290A421C9594F00C6F00D /* day9.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day9.txt; sourceTree = "<group>"; };
+		711290A521C9596600C6F00D /* day10.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day10.txt; sourceTree = "<group>"; };
+		711290A621C9597600C6F00D /* day11.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day11.txt; sourceTree = "<group>"; };
+		711290A721C9598100C6F00D /* day12.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day12.txt; sourceTree = "<group>"; };
+		711290A821C9599800C6F00D /* day13.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day13.txt; sourceTree = "<group>"; };
+		711290A921C959AB00C6F00D /* day14.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day14.txt; sourceTree = "<group>"; };
+		711290AA21C959C000C6F00D /* day15.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day15.txt; sourceTree = "<group>"; };
+		711290AB21C959D000C6F00D /* day16.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day16.txt; sourceTree = "<group>"; };
+		711290AC21C959E000C6F00D /* day17.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day17.txt; sourceTree = "<group>"; };
+		711290AD21C959F000C6F00D /* day18.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day18.txt; sourceTree = "<group>"; };
+		711290AE21C95A0300C6F00D /* day19.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day19.txt; sourceTree = "<group>"; };
+		711290AF21C95A2700C6F00D /* day20.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day20.txt; sourceTree = "<group>"; };
+		711290B021C95A3700C6F00D /* day21.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day21.txt; sourceTree = "<group>"; };
+		711290B121C95A4500C6F00D /* day22.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day22.txt; sourceTree = "<group>"; };
+		711290B221C95A5500C6F00D /* day23.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day23.txt; sourceTree = "<group>"; };
+		711290B321C95A6300C6F00D /* day24.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day24.txt; sourceTree = "<group>"; };
+		711290B421C95A7200C6F00D /* day25.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day25.txt; sourceTree = "<group>"; };
 		71D33BE021C923AA0099E59D /* AdventOfCode2017 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AdventOfCode2017; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D33BE321C923AA0099E59D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		71D33BEC21C923F50099E59D /* Day.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
@@ -115,6 +134,25 @@
 				71D33BFC21C930760099E59D /* day4.txt */,
 				71D33C0121C931D20099E59D /* day5.txt */,
 				71D33C0221C937E40099E59D /* day6.txt */,
+				711290A221C952F300C6F00D /* day7.txt */,
+				711290A321C9531900C6F00D /* day8.txt */,
+				711290A421C9594F00C6F00D /* day9.txt */,
+				711290A521C9596600C6F00D /* day10.txt */,
+				711290A621C9597600C6F00D /* day11.txt */,
+				711290A721C9598100C6F00D /* day12.txt */,
+				711290A821C9599800C6F00D /* day13.txt */,
+				711290A921C959AB00C6F00D /* day14.txt */,
+				711290AA21C959C000C6F00D /* day15.txt */,
+				711290AB21C959D000C6F00D /* day16.txt */,
+				711290AC21C959E000C6F00D /* day17.txt */,
+				711290AD21C959F000C6F00D /* day18.txt */,
+				711290AE21C95A0300C6F00D /* day19.txt */,
+				711290AF21C95A2700C6F00D /* day20.txt */,
+				711290B021C95A3700C6F00D /* day21.txt */,
+				711290B121C95A4500C6F00D /* day22.txt */,
+				711290B221C95A5500C6F00D /* day23.txt */,
+				711290B321C95A6300C6F00D /* day24.txt */,
+				711290B421C95A7200C6F00D /* day25.txt */,
 			);
 			path = Input;
 			sourceTree = "<group>";

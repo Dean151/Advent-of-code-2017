@@ -42,15 +42,13 @@ class Day6: Day {
     static func run(input: String) {
         let bank = input.components(separatedBy: .whitespacesAndNewlines).compactMap { Int($0) }
         
-        let example = redistributeUntilRepeat(bank: [0, 2, 7, 0])
-        assert(example.count == 5)
+        assert(redistributeUntilRepeat(bank: [0, 2, 7, 0]).count == 5)
         
         let redistributed = redistributeUntilRepeat(bank: bank)
         print("Redistributed \(redistributed.count) times before repeating for Day 6-1")
         
         // Redistribute
-        let example2 = redistributeUntilRepeat(bank: example.output)
-        assert(example2.count == 4)
+        assert(redistributeUntilRepeat(bank: redistributeUntilRepeat(bank: [0, 2, 7, 0]).output).count == 4)
         
         let redistributed2 = redistributeUntilRepeat(bank: redistributed.output)
         print("The loop size for Day 6-2 is \(redistributed2.count)")
