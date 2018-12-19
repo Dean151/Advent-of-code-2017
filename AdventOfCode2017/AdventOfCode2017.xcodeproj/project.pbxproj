@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		711290B621C95B0600C6F00D /* Day7.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711290B521C95B0600C6F00D /* Day7.swift */; };
+		7194711921CA99D8008DA0EE /* Day8.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7194711821CA99D8008DA0EE /* Day8.swift */; };
 		71D33BE421C923AA0099E59D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BE321C923AA0099E59D /* main.swift */; };
 		71D33BED21C923F50099E59D /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BEC21C923F50099E59D /* Day.swift */; };
 		71D33BEF21C923FB0099E59D /* shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D33BEE21C923FB0099E59D /* shared.swift */; };
@@ -53,6 +54,7 @@
 		711290B321C95A6300C6F00D /* day24.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day24.txt; sourceTree = "<group>"; };
 		711290B421C95A7200C6F00D /* day25.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day25.txt; sourceTree = "<group>"; };
 		711290B521C95B0600C6F00D /* Day7.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day7.swift; sourceTree = "<group>"; };
+		7194711821CA99D8008DA0EE /* Day8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day8.swift; sourceTree = "<group>"; };
 		71D33BE021C923AA0099E59D /* AdventOfCode2017 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AdventOfCode2017; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D33BE321C923AA0099E59D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		71D33BEC21C923F50099E59D /* Day.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				71D33BFF21C931C70099E59D /* Day5.swift */,
 				71D33C0321C937F80099E59D /* Day6.swift */,
 				711290B521C95B0600C6F00D /* Day7.swift */,
+				7194711821CA99D8008DA0EE /* Day8.swift */,
 			);
 			path = Days;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				711290B621C95B0600C6F00D /* Day7.swift in Sources */,
 				71D33BF421C9250F0099E59D /* Day1.swift in Sources */,
 				71D33BEF21C923FB0099E59D /* shared.swift in Sources */,
+				7194711921CA99D8008DA0EE /* Day8.swift in Sources */,
 				71D33BF121C924190099E59D /* Input.swift in Sources */,
 				71D33BE421C923AA0099E59D /* main.swift in Sources */,
 				71D33C0021C931C70099E59D /* Day5.swift in Sources */,
