@@ -19,3 +19,13 @@ extension NSTextCheckingResult {
         return (string as NSString).substring(with: range)
     }
 }
+
+extension Int {
+    func hexValue(minDigits: UInt = 0) -> String {
+        var hex = String(self, radix: 16)
+        while minDigits > hex.count {
+            hex = "0" + hex
+        }
+        return hex
+    }
+}

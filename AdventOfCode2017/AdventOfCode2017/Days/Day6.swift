@@ -11,7 +11,7 @@ import Foundation
 class Day6: Day {
     
     static func hexValue(bank: [Int]) -> String {
-        return bank.reduce("", { return $0 + String($1, radix: 16) })
+        return bank.reduce("", { return $0 + $1.hexValue() })
     }
     
     static func redistribute(bank: [Int]) -> [Int] {
