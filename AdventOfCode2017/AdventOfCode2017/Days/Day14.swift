@@ -36,17 +36,48 @@ class Day14: Day {
             return usage.filter({ $0 }).count
         }
         
+        func neighbors(from index: Int, includeSelf: Bool = true) -> [Int] {
+            let neighbors: [Int]
+            if index % width == width - 1 {
+                neighbors = [index - width, index - 1, index + width]
+            } else if index % width == 0 {
+                neighbors = [index - width, index + 1, index + width]
+            } else {
+                neighbors = [index - width, index - 1, index + 1, index + width]
+            }
+            return neighbors.filter({ $0 >= 0 && $0 < width * height })
+        }
+        
+        func delimitRegion(from index: Int) -> Set<Int> {
+            var region = Set<Int>()
+            var toResolve = Set<Int>([index])
+            repeat {
+                let current = toResolve.removeFirst()
+                region.insert(current)
+                toResolve.formUnion(neighbors(from: current).filter({ usage[$0] && !region.contains($0) }))
+            } while !toResolve.isEmpty
+            
+            return region
+        }
+        
         var regions: Int {
-            // TODO!
-            return 0
+            var inRegion = Set<Int>()
+            var regions = 0
+            for (index,used) in usage.enumerated() {
+                if used && !inRegion.contains(index) {
+                    regions += 1
+                    inRegion.formUnion(delimitRegion(from: index))
+                }
+            }
+            return regions
         }
     }
     
     static func run(input: String) {
         
-        assert(Disk(string: "flqrgnkx").used == 8108)
-        
         let disk = Disk(string: input.components(separatedBy: .whitespacesAndNewlines).first!)
+        
+        assert(Disk(string: "flqrgnkx").used == 8108)
         print("Number of squares used for 14-1: \(disk.used)")
         
         assert(Disk(string: "flqrgnkx").regions == 1242)
