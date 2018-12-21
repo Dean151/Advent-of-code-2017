@@ -52,13 +52,13 @@ class Day18: Day {
         var registry: [Character: Int]
         
         enum Instruction {
-            case sound(variable: Character)
+            case sound(value: Value)
             case set(variable: Character, value: Value)
             case add(variable: Character, value: Value)
             case multiply(variable: Character, value: Value)
             case modulo(variable: Character, value: Value)
             case recovers(variable: Character)
-            case jumps(variable: Character, value: Value)
+            case jumps(test: Value, value: Value)
             
             func perform(on registry: inout [Character: Int]) {
                 switch self {
@@ -86,7 +86,8 @@ class Day18: Day {
                 
                 switch type {
                 case "snd":
-                    return .sound(variable: variable)
+                    guard let value = RawValue.from(string: components[1]) else { return nil }
+                    return .sound(value: value)
                 case "rcv":
                     return .recovers(variable: variable)
                 default:
@@ -108,7 +109,8 @@ class Day18: Day {
                 case "mod":
                     return .modulo(variable: variable, value: value)
                 case "jgz":
-                    return .jumps(variable: variable, value: value)
+                    guard let test = RawValue.from(string: components[1]) else { return nil }
+                    return .jumps(test: test, value: value)
                 default:
                     return nil
                 }
@@ -126,119 +128,89 @@ class Day18: Day {
             return Program(pid: pid, instructions: instructions)
         }
         
-        var current = 0
+        enum Action {
+            case stopping, none
+        }
         
-        @discardableResult
-        func execute(snd: (Character) -> Bool, rcv: (Character) -> Bool) -> Bool {
+        enum State {
+            case stopped, waiting, running
+        }
+        
+        var state = State.stopped
+        var current = 0
+        func execute(snd: (Int) -> Action, rcv: (Character) -> Action) {
+            if current >= instructions.count || current < 0 {
+                state = .stopped
+            }
+            state = .running
             while current < instructions.count {
                 let instruction = instructions[current]
                 switch instruction {
-                case .sound(variable: let variable):
-                    if !snd(variable) {
-                        return false
+                case .sound(value: let value):
+                    let action = snd(value.realValue(with: registry))
+                    if action == .stopping {
+                        return
                     }
                 case .recovers(variable: let variable):
-                    if !rcv(variable) {
-                        return false
+                    let action = rcv(variable)
+                    if action == .stopping {
+                        return
                     }
-                case .jumps(variable: let variable, value: let jumpValue):
-                    if let value = registry[variable], value > 0 {
-                        current += jumpValue.realValue(with: registry) - 1
+                case .jumps(test: let test, value: let jumpValue):
+                    if test.realValue(with: registry) > 0 {
+                        current += jumpValue.realValue(with: registry)
+                        continue
                     }
                 default:
                     instruction.perform(on: &registry)
                 }
                 current += 1
             }
-            return true
+            state = .stopped
         }
         
         func soundRecovered() -> Int {
             var lastSoundPlayed = 0
             
-            execute(snd: { (variable) -> Bool in
-                lastSoundPlayed = registry[variable] ?? 0
-                return true
-            }, rcv: { (variable) -> Bool in
-                return registry[variable] != 0 ? false : true
+            execute(snd: { (value) -> Action in
+                lastSoundPlayed = value
+                return .none
+            }, rcv: { (variable) -> Action in
+                return (registry[variable] ?? 0) != 0 ? .stopping : .none
             })
             
             return lastSoundPlayed
         }
         
-        var isKilled = false
-        var waiting = false
+        var received = [Int]()
         var sendedCount = 0
         
-        var queue: DispatchQueue?
-        private var received = [Int]()
-        func received(value: Int) {
-            queue!.sync {
-                received.append(value)
+        func execute(with another: Program, firstRun: Bool = true) {
+            if firstRun {
+                another.state = .running
             }
-        }
-        var unqueueReceived: Int? {
-            return queue!.sync {
-                if received.count == 0 {
-                    return nil
+            execute(snd: { (value) -> Day18.Program.Action in
+                another.received.append(value)
+                sendedCount += 1
+                if another.state == .waiting {
+                    another.state = .running
                 }
-                return received.removeFirst()
-            }
-        }
-        var pending: Int {
-            return queue!.sync {
-                return received.count
-            }
-        }
-        var isWaiting: Bool {
-            return queue!.sync {
-                return waiting
-            }
-        }
-        
-        func execute(with another: Program) {
-            while !isKilled {
-                if execute(snd: { (variable) -> Bool in
-                    print("pid \(pid) send \(registry[variable] ?? 0)")
-                    another.received(value: registry[variable] ?? 0)
-                    sendedCount += 1
-                    return true
-                }, rcv: { (variable) -> Bool in
-                    if let value = unqueueReceived {
-                        print("pid \(pid) received \(value) (\(pending) left)")
-                        registry[variable] = value
-                        return true
-                    } else if another.isWaiting {
-                        print("DEADLOCK")
-                        isKilled = true
-                        another.isKilled = true
-                        return false
-                    } else {
-                        print("pid \(pid) waits for a value")
-                        waiting = true
-                        return false
+                return .none
+            }, rcv: { (variable) -> Day18.Program.Action in
+                if received.isEmpty {
+                    if another.state != .running {
+                        state = .stopped
+                        return .stopping
                     }
-                }) {
-                    isKilled = true
+                    state = .waiting
+                    another.execute(with: self, firstRun: false)
+                    return .stopping
                 }
-            }
+                let value = received.removeFirst()
+                registry[variable] = value
+                return .none
+            })
         }
-    }
-    
-    static func competion(between p0: Program, and p1: Program) -> Int {
-        
-        let communicationQueue = DispatchQueue(label: "safe communication queue")
-        p0.queue = communicationQueue
-        p1.queue = communicationQueue
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            p0.execute(with: p1)
-        }
-        
-        // p1 on main thread. Once p1 is gone ; it cannot send anymore data
-        p1.execute(with: p0)
-        
-        return p1.sendedCount
     }
     
     static func run(input: String) {
@@ -251,16 +223,16 @@ class Day18: Day {
         assert({ () -> Bool in
             let p0 = Program.from(input: example2, pid: 0)
             let p1 = Program.from(input: example2, pid: 1)
-            let nb = competion(between: p0, and: p1)
             
-            return nb == 3
+            p0.execute(with: p1)
+            return p1.sendedCount == 3
         }())
         
         
         let p0 = Program.from(input: input, pid: 0)
         let p1 = Program.from(input: input, pid: 1)
         
-        let nb = competion(between: p0, and: p1)
-        print("Number of data sent by p1 for 18-2 is \(nb)")
+        p0.execute(with: p1)
+        print("Number of data sent by p1 for 18-2 is \(p1.sendedCount)")
     }
 }
