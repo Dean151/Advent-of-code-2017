@@ -43,5 +43,6 @@ Some attention will be ported to performance consideration, let try to make that
 | **14** | 0,868s          | 8214     | 1093       |
 | **15** | 2,098s          | 567      | 323        |
 | **16** | 0,203s          | kpfonjglcibaedhm | odiabmplhfgjcekn |
+| **17** | 0,632s          | 1670     | 2316253    |
 
 \* : Best elapsed time of the complete solution for my MacBook Pro 13in mid 2013 in "Release" mode
