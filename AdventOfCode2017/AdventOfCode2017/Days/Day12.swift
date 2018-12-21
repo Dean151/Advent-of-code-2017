@@ -15,7 +15,7 @@ class Day12: Day {
         var pipesTo = [Int]()
         
         func directPipesToPrograms(with programs: [Int: Program]) -> [Program] {
-            return pipesTo.flatMap({ programs[$0] })
+            return pipesTo.compactMap({ programs[$0] })
         }
         
         func allPipes(with programs: [Int: Program], excluding: Set<Int> = []) -> Set<Int> {

@@ -29,3 +29,24 @@ extension Int {
         return hex
     }
 }
+
+extension Character {
+    func hexToBin(minDigits: UInt = 0) -> [Bool] {
+        var array = [Bool](repeating: false, count: Int(minDigits))
+        var value = UInt("\(self)") ?? UInt(self.unicodeScalars.first!.value - 87)
+        var index = 0
+        repeat {
+            let bool = value % 2 == 1
+            if index >= array.count {
+                array.append(bool)
+            } else {
+                array[index] = bool
+            }
+            
+            value = (value - (value % 2)) / 2
+            index += 1
+        } while value > 0
+        
+        return array.reversed()
+    }
+}
